@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name fait_maison)(type KiCad)(uri ${KIPRJMOD}/libraries/fait_maison.pretty)(options "")(descr ""))
+  (lib (name Boards)(type KiCad)(uri ${KIPRJMOD}/libraries/Boards.pretty)(options "")(descr ""))
+)

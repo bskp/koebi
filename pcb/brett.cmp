@@ -1,0 +1,283 @@
+Cmp-Mod V01 Created by PcbNew   date = 2019 August 22, Thursday 16:31:07
+
+BeginCmp
+TimeStamp = 5D5ED53B
+Path = /5D5B6A4A/5D5BE265
+Reference = JSM1;
+ValeurCmp = Conn_01x04_Male;
+IdModule  = Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5ED493
+Path = /5D5B6A4A/5D5BE232
+Reference = C3;
+ValeurCmp = 100u;
+IdModule  = Capacitor_THT:CP_Radial_D8.0mm_P3.50mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5ED47D
+Path = /5D5B6A4A/5D73BBDC
+Reference = JP9;
+ValeurCmp = SolderJumper_3_Bridged12;
+IdModule  = Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5ED469
+Path = /5D5B6A4A/5D5BE25E
+Reference = B1;
+ValeurCmp = SilentStepStick;
+IdModule  = fait_maison:StepStick;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5ED453
+Path = /5D5B6A4A/5D5F6487
+Reference = JP8;
+ValeurCmp = SolderJumper_3_Bridged12;
+IdModule  = Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5ED43D
+Path = /5D5B6A4A/5D6E780C
+Reference = JES1;
+ValeurCmp = Conn_01x03_Male;
+IdModule  = Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5F0B38
+Path = /5D5B6A4A/5D5BE232
+Reference = C3;
+ValeurCmp = 100u;
+IdModule  = Capacitor_THT:CP_Radial_D8.0mm_P3.50mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DE196
+Path = /5D63A20A
+Reference = U2;
+ValeurCmp = TSR_1-2450;
+IdModule  = Converter_DCDC:Converter_DCDC_TRACO_TSR-1_THT;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5F2FBE
+Path = /5D588B57
+Reference = U1;
+ValeurCmp = 74LS138;
+IdModule  = Package_DIP:SMDIP-16_W7.62mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DE15B
+Path = /5D8C32D5
+Reference = R5;
+ValeurCmp = 1k;
+IdModule  = Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DE144
+Path = /5D7C84A5
+Reference = R4;
+ValeurCmp = 4k7;
+IdModule  = Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DE12D
+Path = /5D7C72A2
+Reference = R3;
+ValeurCmp = 4k7;
+IdModule  = Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DE116
+Path = /5D6AD63C
+Reference = R2;
+ValeurCmp = 10k;
+IdModule  = Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DE0FF
+Path = /5D675738
+Reference = R1;
+ValeurCmp = 100kOhm;
+IdModule  = Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DE0E8
+Path = /5D8A2EE0
+Reference = Q2;
+ValeurCmp = BC547;
+IdModule  = Package_TO_SOT_THT:TO-92_Inline;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DE0D6
+Path = /5D670AE2
+Reference = Q1;
+ValeurCmp = BC547;
+IdModule  = Package_TO_SOT_THT:TO-92_Inline;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5E9C54
+Path = /5D5B6A4A/5D5BE265
+Reference = JSM1;
+ValeurCmp = Conn_01x04_Male;
+IdModule  = Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5E9BCF
+Path = /5D5B6A4A/5D73BBDC
+Reference = JP9;
+ValeurCmp = SolderJumper_3_Bridged12;
+IdModule  = Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5E9C11
+Path = /5D5B6A4A/5D5F6487
+Reference = JP8;
+ValeurCmp = SolderJumper_3_Bridged12;
+IdModule  = Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DE042
+Path = /5D5F0C87
+Reference = JP4;
+ValeurCmp = SolderJumper_3_Open;
+IdModule  = Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DE02C
+Path = /5D5EFA64
+Reference = JP3;
+ValeurCmp = SolderJumper_3_Open;
+IdModule  = Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DE016
+Path = /5D5DCECA
+Reference = JP2;
+ValeurCmp = SolderJumper_3_Open;
+IdModule  = Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DE000
+Path = /5D8DE6FB
+Reference = JP1;
+ValeurCmp = SolderJumper_3_Bridged12;
+IdModule  = Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5EC13A
+Path = /5D5B6A4A/5D6E780C
+Reference = JES1;
+ValeurCmp = Conn_01x03_Male;
+IdModule  = Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DDFD2
+Path = /5D958FA1
+Reference = J4;
+ValeurCmp = Conn_01x05_Male;
+IdModule  = Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DDFB9
+Path = /5D8AB074
+Reference = J3;
+ValeurCmp = Conn_01x02_Male;
+IdModule  = Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DDFA3
+Path = /5D7B3556
+Reference = J2;
+ValeurCmp = Conn_01x04_Female;
+IdModule  = Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DDF8B
+Path = /5D59EF55
+Reference = J1;
+ValeurCmp = Screw_Terminal_01x02;
+IdModule  = TerminalBlock_RND:TerminalBlock_RND_205-00232_1x02_P5.08mm_Horizontal;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DDF4F
+Path = /5D599259
+Reference = F1;
+ValeurCmp = Polyfuse;
+IdModule  = Fuse:Fuse_Bourns_MF-RHT1000;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DDE42
+Path = /5D643DCC
+Reference = C4;
+ValeurCmp = 100u;
+IdModule  = Capacitor_THT:CP_Radial_D8.0mm_P3.50mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DDCF0
+Path = /5D59BC91
+Reference = C2;
+ValeurCmp = 100n;
+IdModule  = Capacitor_THT:C_Radial_D6.3mm_H5.0mm_P2.50mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DDCE6
+Path = /5D5973D1
+Reference = C1;
+ValeurCmp = 100u;
+IdModule  = Capacitor_THT:CP_Radial_D8.0mm_P3.50mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DDC3D
+Path = /5D4C381A
+Reference = B1;
+ValeurCmp = ESP32_THING_W_ANT_KEEPOUT;
+IdModule  = Boards:ESP32_THING;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5E98AC
+Path = /5D5B6A4A/5D5BE25E
+Reference = B0;
+ValeurCmp = SilentStepStick;
+IdModule  = fait_maison:StepStick;
+EndCmp
+
+BeginCmp
+TimeStamp = 5D5DDBC2
+Path = /5D680594
+Reference = _C1;
+ValeurCmp = 1n;
+IdModule  = Capacitor_THT:C_Radial_D6.3mm_H5.0mm_P2.50mm;
+EndCmp
+
+EndListe

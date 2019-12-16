@@ -1,0 +1,9 @@
+[submodule "micropython"]
+	path = firmware/frameworks/micropython
+	url = git@github.com:bskp/micropython_esp32_mcpwm.git
+[submodule "esp-idf"]
+	path = firmware/frameworks/esp-idf
+	url = git@github.com:espressif/esp-idf.git
+[submodule "firmware/webrepl"]
+	path = firmware/webrepl
+	url = git@github.com:micropython/webrepl.git

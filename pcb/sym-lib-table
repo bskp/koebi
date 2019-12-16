@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name fait_maison)(type Legacy)(uri ${KIPRJMOD}/libraries/fait_maison.lib)(options "")(descr ""))
+  (lib (name SparkFun-Boards)(type Legacy)(uri ${KIPRJMOD}/libraries/SparkFun-Boards.lib)(options "")(descr ""))
+)
