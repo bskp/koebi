@@ -13,7 +13,7 @@ if __debug__:
     from uosc.socketutil import get_hostport
 from uosc.server import handle_osc
 
-MAX_DGRAM_SIZE = 500
+MAX_DGRAM_SIZE = 256
 log = logging.getLogger("uosc.async_server")
 
 

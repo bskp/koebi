@@ -70,6 +70,11 @@ class Control:
         return (create_message(self.topic, self._pack(value)),)
 
 
+    def mark_dirty(self):
+        ''' Forces a value resend on the next #push. '''
+        self._gui_value = None
+
+
     def pull(self, topic, values):
         ''' Update this controls value from an OSC message. '''
         if self.topic != topic:
@@ -145,7 +150,7 @@ class ControlTuple:
         self.left = left
         self.right = right
 
-        self._previous_values = (None, None)
+        self._gui_values = (None, None)
 
         def action_fallback(l, r):
             self.left.set(l) if self.left else None
@@ -175,13 +180,18 @@ class ControlTuple:
 
     def push(self):
         values = self.get()
-        if values == self._previous_values:
+        if values == self._gui_values:
             return None
 
-        self._previous_values = values  # Clear dirty flag.
+        self._gui_values = values  # Clear dirty flag.
         l = self.left._pack(values[0]) if self.left else 0
         r = self.right._pack(values[1]) if self.right else 0
         return (create_message(self.topic, l, r),)
+
+
+    def mark_dirty(self):
+        ''' Forces a value resend on the next #push. '''
+        self._gui_values = None
 
 
     def pull(self, topic, values):
@@ -196,12 +206,12 @@ class ControlTuple:
 
     def bind_left(self, left):
         self.left = left
-        self._previous_values = (None, None)
+        self._gui_values = (None, None)
 
 
     def bind_right(self, right):
         self.right = right
-        self._previous_values = (None, None)
+        self._gui_values = (None, None)
 
 
 
@@ -220,7 +230,6 @@ class Tracker:
         self.cache = getattr(self.obj, self.attr)
         return self.cache
 
-
     # TODO brauchts das cache überhaupt?
 
 
@@ -237,7 +246,7 @@ class Label:
         else:
             raise ValueError("formatter must be either a function or a format string")
 
-        self._previous_label = None
+        self._gui_label = None
 
 
     def push(self):
@@ -245,11 +254,16 @@ class Label:
         value = self.source()
         label = self.formatter(value)
 
-        if label == self._previous_label:
+        if label == self._gui_label:
             return None
 
-        self._previous_label = label  # Clear dirty flag.
+        self._gui_label = label  # Clear dirty flag.
         return (create_message(self.topic, label),)
+
+
+    def mark_dirty(self):
+        ''' Forces a value resend on the next #push. '''
+        self._gui_label = None
 
 
     def pull(self, topic, values):

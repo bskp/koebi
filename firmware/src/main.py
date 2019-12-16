@@ -404,136 +404,12 @@ class Breath(Page):
 
 breath = Breath('lfo')
 
-'''
-class Mixer(Page):
-    def controlled_axes(self):
-        return [ax for ax, toggler in self.toggles.items() if toggler.get()]
-
-
-    def set_for(self, base):
-        def handler(_):
-            print("%d controlled axes." % len(self.controlled_axes()))
-            for ax in self.controlled_axes():
-                print("setting at %f" % ax.position)
-                base[ax] = ax.position
-        return handler
-
-
-    def go_for(self, base):
-        if base is self.tl:
-            x, y = 1, 0
-        elif base is self.tr:
-            x, y = 1, 1
-        elif base is self.bl:
-            x, y = 0, 0
-        elif base is self.br:
-            x, y = 0, 1
-
-        def handler(_):
-            for ax in self.controlled_axes():
-                val = base[ax]
-                if val is None:
-                    print("Endpoint not set. Skipping...")
-                ax.set_target(val)
-                self.x.set(x)
-                self.y.set(y)
-        return handler
-
-
-    def set_2d_target(self, x, y):
-        ref_dist = 0  # the longest distance. Used to normalized all travel speeds
-
-        targets = {}
-        axes = self.controlled_axes()
-
-        print(x)
-        print(y)
-
-        for ax in axes:
-            cont = False
-            if self.bl[ax] is None:
-                print("BL is not defined")
-                cont = True
-
-            if self.br[ax] is None:
-                print("BR is not defined")
-                cont = True
-
-            if self.tl[ax] is None:
-                print("TL is not defined")
-                cont = True
-
-            if self.tr[ax] is None:
-                print("TR is not defined")
-                cont = True
-
-            if cont: 
-                continue
-
-            rail_bot = self.bl[ax] + (self.br[ax] - self.bl[ax])*y
-            rail_top = self.tl[ax] + (self.tr[ax] - self.tl[ax])*y
-            target = rail_bot + (rail_top - rail_bot)*x
-            targets[ax] = target
-
-            dist = abs(target - ax.position)
-            if dist > ref_dist:
-                ref_dist = dist
-
-        # The reference (ie. longest) distance is known now. Set speeds and targets:
-        for ax in axes:
-            target = targets[ax]
-            dist = target - ax.position
-
-            factor = abs(dist/ref_dist)
-
-            ax.set_target(target)
-
-            ax.restore_acc = ax.acc
-            ax.restore_top_speed = ax.top_speed
-
-            ax.acc = ax.acc*factor
-            ax.top_speed = ax.top_speed*factor
-
-
-    def init_controls(self):
-        # Bases
-        self.tl = {axis: None for axis in axes.values()}
-        self.tr = {axis: None for axis in axes.values()}
-        self.bl = {axis: None for axis in axes.values()}
-        self.br = {axis: None for axis in axes.values()}
-
-        self.toggles = {}
-        for label, axis in axes.items():
-            toggle = Control('/mixer/' + label, feedback=True)
-            self.toggles[axis] = toggle
-
-        self.acc = vel.acc
-        self.vel_limit = vel.vel_limit
-
-        self.set_tl = Control('/mixer/set/tl', action=self.set_for(self.tl))
-        self.set_tr = Control('/mixer/set/tr', action=self.set_for(self.tr))
-        self.set_bl = Control('/mixer/set/bl', action=self.set_for(self.bl))
-        self.set_br = Control('/mixer/set/br', action=self.set_for(self.br))
-
-        self.go_tl = Control('/mixer/go/tl', action=self.go_for(self.tl))
-        self.go_tr = Control('/mixer/go/tr', action=self.go_for(self.tr))
-        self.go_bl = Control('/mixer/go/bl', action=self.go_for(self.bl))
-        self.go_br = Control('/mixer/go/br', action=self.go_for(self.br))
-
-        self.x = Control('/mixer/x')
-        self.y = Control('/mixer/y')
-        self.target = ControlTuple('/mixer/target', action=self.set_2d_target, left=self.x, right=self.y)
-
-mixer = Mixer('mixer')
-'''
-
 
 pages = [
     vel,
     pos,
     xy,
     breath
-    #mixer
 ]
 
 mem("pages")
@@ -565,7 +441,7 @@ def osc_handler(timetag, data):
         bundle.add(create_message('/page/velocity', 1))
         osc_client.send(bundle)
 
-        # Signal.
+        # Signal connectivity by winking with the fan
         vel.fan.set(1)
         time.sleep_ms(500)
         vel.fan.set(0)
@@ -593,20 +469,27 @@ def osc_handler(timetag, data):
             control.pull(topic, values)
 
 
-@rate_limit(25)
+@rate_limit(ms=25)
 def gui_update(_=None):
     if not osc_client:
         return
 
     bundle = active_page.collect_updates()
+
     if bundle:
-        gc.collect()
-        #print("Bundle with %d msg." % len(bundle) )
-        osc_client.send(bundle)
+        #print("Bundle with %d messages" % len(bundle))
+        partial = Bundle()
+        for idx, update in enumerate(bundle):
+            partial.add(update)
+            if idx%10 == 9:
+                osc_client.send(partial)
+                partial = Bundle()
+
+        osc_client.send(partial)
 
 
 gui_timer = Timer(0)
-gui_timer.init(period=200, mode=Timer.PERIODIC, callback=gui_update)
+gui_timer.init(period=50, mode=Timer.PERIODIC, callback=gui_update)
 
 mem("gui callbacks")
 
