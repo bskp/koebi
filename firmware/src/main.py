@@ -483,8 +483,6 @@ def gui_update(_=None):
         return
 
     bundle = active_page.collect_updates()
-    later = time.ticks_ms()
-    t_coll = time.ticks_diff(later, now)
 
     if bundle:
         #print("Bundle with %d messages" % len(bundle))
@@ -496,11 +494,6 @@ def gui_update(_=None):
                 partial = Bundle()
 
         osc_client.send(partial)
-
-
-    latest = time.ticks_ms()
-    t_end = time.ticks_diff(latest, later)
-    print("coll: %3d, send: %3d" % (t_coll, t_end) )
 
     last_gui_update_finished = time.ticks_ms()
 
