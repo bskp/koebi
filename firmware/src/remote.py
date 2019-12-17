@@ -31,7 +31,7 @@ class Control:
             self.bidi = True
 
         self._gui_value = None
-        self._previous_bounds = None
+        self._gui_bounds = None
 
         if not self.val:
             self.val = 0 if self.bidi else self._bounds()[0]
@@ -62,11 +62,11 @@ class Control:
         ''' Create an OSC message if changes are pending. '''
         value = self.get()
         bounds = self._bounds()
-        if value == self._gui_value and bounds == self._previous_bounds:
+        if value == self._gui_value and bounds == self._gui_bounds:
             return None
 
         self._gui_value = value  # Clear dirty flag.
-        self._previous_bounds = bounds
+        self._gui_bounds = bounds
         return (create_message(self.topic, self._pack(value)),)
 
 
