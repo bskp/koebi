@@ -469,12 +469,22 @@ def osc_handler(timetag, data):
             control.pull(topic, values)
 
 
-@rate_limit(ms=25)
+last_gui_update_finished = 0
+
 def gui_update(_=None):
     if not osc_client:
         return
 
+    global last_gui_update_finished
+
+    now = time.ticks_ms()
+    if time.ticks_diff(now, last_gui_update_finished) < 70:
+        # Ensure the main loop had at least 70ms to do its input handling (etc) before the gui update is redone.
+        return
+
     bundle = active_page.collect_updates()
+    later = time.ticks_ms()
+    t_coll = time.ticks_diff(later, now)
 
     if bundle:
         #print("Bundle with %d messages" % len(bundle))
@@ -488,8 +498,16 @@ def gui_update(_=None):
         osc_client.send(partial)
 
 
+    latest = time.ticks_ms()
+    t_end = time.ticks_diff(latest, later)
+    print("coll: %3d, send: %3d" % (t_coll, t_end) )
+
+    last_gui_update_finished = time.ticks_ms()
+
+
+
 gui_timer = Timer(0)
-gui_timer.init(period=50, mode=Timer.PERIODIC, callback=gui_update)
+gui_timer.init(period=100, mode=Timer.PERIODIC, callback=gui_update)
 
 mem("gui callbacks")
 
