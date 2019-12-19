@@ -1,6 +1,3 @@
-# This file is executed on every boot (including wake-boot from deepsleep)
-#import esp
-#esp.osdebug(None)
 import webrepl
 webrepl.start()
 
@@ -18,3 +15,4 @@ ap.active(True)
 #ap.config(essid='koebi', authmode=network.AUTH_WPA2_PSK, password='N7j4sk***', channel=11)
 ap.config(essid='koebi', channel=8)
 
+import uftpd
