@@ -1,12 +1,14 @@
-# Köbi: Robotic puppeteering
+# Köbi: Robotic Puppeteering
 
-![Setup](setup.jpeg)
+![Setup](draufsicht.jpeg)
 
-Köbi is a 6-channel wireless stepper controller consisting of a [SparkFun ESP32 Thing](https://www.sparkfun.com/products/13907) and a **breakout shield**. The latter is inspired by [RAMPS](https://reprap.org/wiki/Arduino_Mega_Pololu_Shield) and accomodates six stepper motor drivers ([TMC2130 StepSticks](https://shop.watterott.com/SilentStepStick-TMC2130), optical endstop sensors and fan control.
+Köbi is a 6-channel wireless stepper controller consisting of a [SparkFun ESP32 Thing](https://www.sparkfun.com/products/13907) (red) and a **breakout shield** (white). The latter is inspired by [RAMPS](https://reprap.org/wiki/Arduino_Mega_Pololu_Shield) and accomodates six stepper motor drivers ([TMC2130 StepSticks](https://shop.watterott.com/SilentStepStick-TMC2130), green), optical endstop sensors and fan control.
 
-The software on the ESP32 provides an [OSC (Open Sound Control)](https://en.wikipedia.org/wiki/Open_Sound_Control) server. This, in combination with a matching tablet GUI for the modular [TouchOSC](https://hexler.net/products/touchosc) app allows easy control of the motors (which are the thread spools).
+The software on the ESP32 provides an [OSC (Open Sound Control)](https://en.wikipedia.org/wiki/Open_Sound_Control) server. This, in combination with a matching tablet GUI for the modular [TouchOSC](https://hexler.net/products/touchosc) app allows easy control of the steppers (which are the six thread spools).
 
-![Köbi with GUI on tablet](tablet.jpeg)
+Alternatively, the module can be controlled by any other OSC client. The OSC endpoints are documented at the [end of this page](#osc-api).
+
+![No strings attached!](setup.jpeg)
 
 ### Features
 
@@ -43,13 +45,17 @@ There are a ton of things you can hook it to. Feel free to reuse!
 
 ## Getting started
 
-Some code had to be made part of a **special built** of the Micropython firmware.
+This section explains how to get koebi up and running with the default firmware and tablet GUI. This combination allows to control the **speed** and **position** of the six stepper motors **independently** or **in pairs**.
 
-For the **stepper pulse outputs** (the [MCPWM module]()), the functionality is currently not covered by Micropython and had to be implemented in C.
+The ESP32-Board runs a **special build** of the Micropython firmware due to two requirements:
 
-The modules for the **TMC steppper drivers** (which holds names descriptions to dozens of its registers) had to be frozen in order to save memory (the [TMC module]()).
+- The PWM hardware module, which generates the **pulses for the  stepper motors**, is currently not supported by Micropython. This special build includes a Python module supporting it, implemented in C: [MCPWM]()
 
-Read more about the MCPWM module or the TMC module on their respective project pages!
+- The Python module for the **Trinamic TMC steppper drivers** (which holds names and descriptions to dozens of its registers) had to be frozen in order to save memory: [TMC]()
+
+For reusability, these two modules have their own project pages – read on there if you need to know more!
+
+### Flashing
 
 Use the [esptool](https://github.com/espressif/esptool) to flash this custom Micropython build on the ESP32. It is easily installed using pip:
 
@@ -72,17 +78,61 @@ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 406800 write_flash -z --flash
 
 For more information, see the [official Micropython docs](https://micropython.org/download#esp32).
 
+### Setup the TouchOSC GUI
+- Install the [TouchOSC](https://hexler.net/products/touchosc) app on a tablet.  
+It's a paid app (5.-), sorry about that.
+
+- Install the application to edit layouts, [TouchOSC Editor](https://hexler.net/products/touchosc#downloads), on a computer (free)
+
+- Transfer the ``koebi.touchosc`` (found in ``/gui``) to the tablet. The official documentation walks you through this for [iOS](https://hexler.net/docs/touchosc-configuration-layout-transfer-wifi?ios) and [Android](https://hexler.net/docs/touchosc-configuration-layout-transfer-wifi?android)
+
+To complete the setup, you need to specify a few options on the tablet. Access these by tapping the **dot** at the **top right corner** in the TouchOSC app.
+
+Set the following **Host**:
+
+- Host: ``192.168.4.1`` (which is the ESP32's IP Address)
+- Port (outgoing): ``8000``
+- Port (incoming): ``9000``
+
+And under **Options**:
+
+- Send Ping (``/ping``): ``On``
+- Delay: ``5s`` 
+
+Finally, make sure to connect with the systems WiFi:
+- Network name (SSID): ``koebi``
+- No security
+
+Upon opening TouchOSC, you should now be able to power up the motors and control them. 
+
+## Developing using VS Code and Pymakr
 - Pymakr + VS Code, alternativen
 - micropy für intellisense
 - Wiki-Seiten mit API zu MCPWM, tmc-control
 
+
+## Recompile the Micropython build
+
+- When is this necessary?
+- Instructions about submodules and forks for micropython/esp-idf
 
 ## Hardware
 
 - Bildi 3D-Druck-Teile
 - PCB-Daten als pdf, gerber und kicad.
 
-## Developing
+<a name="osc-api"></a>
+## Open Sound Control (OSC) API
 
-- Instructions about submodules and forks for micropython/esp-idf
+The following API is implemented in ``remote.py``. 
+
+### Globals
+
+- ``/fan``
+- ``/power`` 
+- ``/reset`` Trigger a software reset of the ESP32 board (bool)
+
+### Motors
+- ``/all/curr`` 
+
  
