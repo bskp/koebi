@@ -49,38 +49,38 @@ This section explains how to get koebi up and running with the default firmware 
 
 The ESP32-Board runs a **special build** of the Micropython firmware due to two requirements:
 
-- The PWM hardware module, which generates the **pulses for the  stepper motors**, is currently not supported by Micropython. This special build includes a Python module supporting it, implemented in C: [MCPWM]()
+- The PWM hardware module, which generates the **pulses for the  stepper motors**, is currently not supported by Micropython. This special build includes a Python module supporting it, implemented in C: The [MCPWM](https://github.com/bskp/micropython_esp32_mcpwm) module.
 
-- The Python module for the **Trinamic TMC steppper drivers** (which holds names and descriptions to dozens of its registers) had to be frozen in order to save memory: [TMC]()
+- The Python module for the **Trinamic TMC steppper drivers** (which holds names and descriptions to dozens of its registers) had to be frozen in order to save memory: The [TMC]() module. (TODO: Not published yet)
 
 For reusability, these two modules have their own project pages – read on there if you need to know more!
 
 ### Flashing
 
-Use the [esptool](https://github.com/espressif/esptool) to flash this custom Micropython build on the ESP32. It is easily installed using pip:
+Use the [esptool](https://github.com/espressif/esptool) to flash this Micropython build on the ESP32. It is easily installed using pip:
 
 ```
-pip install esptool
+$ pip install esptool
 ```
 
 If you put Micropython on your board for the first time, it should be erased first:
 
 ```
-esptool.py --chip esp32 --port /dev/ttyUSB0 erase_flash
+$ esptool.py --chip esp32 --port /dev/ttyUSB0 erase_flash
 ```
 
 After this, the custom firmware can be flashed:
 
 ```
-cd (...)/koebi/firmware
-esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 406800 write_flash -z --flash_mode dio --flash_freq 40m 0x1000 firmware.bin
+$ cd (...)/koebi/firmware
+$ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 406800 write_flash -z --flash_mode dio --flash_freq 40m 0x1000 firmware.bin
 ``` 
 
 For more information, see the [official Micropython docs](https://micropython.org/download#esp32).
 
 ### Setup the TouchOSC GUI
 - Install the [TouchOSC](https://hexler.net/products/touchosc) app on a tablet.  
-It's a paid app (5.-), sorry about that.
+It's a paid app (5.-, sorry about that)
 
 - Install the application to edit layouts, [TouchOSC Editor](https://hexler.net/products/touchosc#downloads), on a computer (free)
 
@@ -101,9 +101,10 @@ And under **Options**:
 
 Finally, make sure to connect with the systems WiFi:
 - Network name (SSID): ``koebi``
-- No security
+- No password / encryption
 
-Upon opening TouchOSC, you should now be able to power up the motors and control them. 
+When opening TouchOSC, you should now be able to power up the motors and control them. 
+
 
 ## Developing using VS Code and Pymakr
 - Pymakr + VS Code, alternativen
@@ -124,15 +125,17 @@ Upon opening TouchOSC, you should now be able to power up the motors and control
 <a name="osc-api"></a>
 ## Open Sound Control (OSC) API
 
-The following API is implemented in ``remote.py``. 
+The following API is implemented in ``remote.py``. It may be used by any other client within ``koebi``'s network to control it. 
 
 ### Globals
 
-- ``/fan``
-- ``/power`` 
-- ``/reset`` Trigger a software reset of the ESP32 board (bool)
+- ``/fan`` Enable or disable the fan cooling the stepper drivers (0/1)
+- ``/power`` Enable or disable the stepper drivers output. Starts the fan upon enabling, and stops it upon disabling (0/1).  
+**Heads up**: Always disable the stepper outputs before pulling koebi's cord. Otherwise, the Trinamic stepper drivers may **be permanently damaged due to overvoltage spikes**!
+- ``/reset`` Trigger a software reset of the ESP32 board (0/1)
 
 ### Motors
-- ``/all/curr`` 
+- ``/all/curr`` Set the steppers' run current, specified in milliamperes (100..1200). High values (>800) may lead to thermal shutdown in a heavy-use scenario.
 
+- ``/all/acc`` Set the steppers' acceleration, in cm/s<sup>2</sup> (0..200)
  
