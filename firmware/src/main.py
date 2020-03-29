@@ -5,7 +5,7 @@ from esp32 import MCPWM
 import time
 
 from uosc.client import Client, Bundle, create_message
-from tmc_control import Tmc2130, Axis, AllAxes, LFO
+from tmc_control import Tmc2130, Axis, LFO
 
 from async_server import serve, run_server
 from uasyncio import get_event_loop

@@ -1,4 +1,5 @@
-# Köbi: Robotic Puppeteering
+Köbi: Robotic Puppeteering
+==========================
 
 ![Setup](draufsicht.jpeg)
 
@@ -9,8 +10,10 @@ The software on the ESP32 provides an [OSC (Open Sound Control)](https://en.wiki
 Alternatively, the module can be controlled by any other OSC client. The OSC endpoints are documented at the [end of this page](#osc-api).
 
 ![No strings attached!](setup.jpeg)
+![Spindles with threads](spulen.jpeg)
 
-### Features
+Features
+--------
 
 - 500g per thread
 - Velocities up to 2m/s
@@ -31,21 +34,8 @@ Alternatively, the module can be controlled by any other OSC client. The OSC end
 There are a ton of things you can hook it to. Feel free to reuse!
 
 
-### Ideas
-
-- [x] Coordinated 2-axis movements
-- [ ] Load visualization
-- [ ] Presets with persistant storage
-- [ ] Self-calibration with markers
-- [x] Sequencer (Sine and jitter movements)
-- [x] Coordinated movements for more than 2 axes
-- [ ] Inverse kinematics
-
----
-
-## Getting started
-
-This section explains how to get koebi up and running with the default firmware and tablet GUI. This combination allows to control the **speed** and **position** of the six stepper motors **independently** or **in pairs**.
+Software + Firmware
+-------------------
 
 The ESP32-Board runs a **special build** of the Micropython firmware due to two requirements:
 
@@ -53,89 +43,53 @@ The ESP32-Board runs a **special build** of the Micropython firmware due to two 
 
 - The Python module for the **Trinamic TMC steppper drivers** (which holds names and descriptions to dozens of its registers) had to be frozen in order to save memory: The [TMC]() module. (TODO: Not published yet)
 
-For reusability, these two modules have their own project pages – read on there if you need to know more!
-
-### Flashing
-
-Use the [esptool](https://github.com/espressif/esptool) to flash this Micropython build on the ESP32. It is easily installed using pip:
-
-```
-$ pip install esptool
-```
-
-If you put Micropython on your board for the first time, it should be erased first:
-
-```
-$ esptool.py --chip esp32 --port /dev/ttyUSB0 erase_flash
-```
-
-After this, the custom firmware can be flashed:
-
-```
-$ cd (...)/koebi/firmware
-$ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 406800 write_flash -z --flash_mode dio --flash_freq 40m 0x1000 firmware.bin
-``` 
-
-For more information, see the [official Micropython docs](https://micropython.org/download#esp32).
-
-### Setup the TouchOSC GUI
-- Install the [TouchOSC](https://hexler.net/products/touchosc) app on a tablet.  
-It's a paid app (5.-, sorry about that)
-
-- Install the application to edit layouts, [TouchOSC Editor](https://hexler.net/products/touchosc#downloads), on a computer (free)
-
-- Transfer the ``koebi.touchosc`` (found in ``/gui``) to the tablet. The official documentation walks you through this for [iOS](https://hexler.net/docs/touchosc-configuration-layout-transfer-wifi?ios) and [Android](https://hexler.net/docs/touchosc-configuration-layout-transfer-wifi?android)
-
-To complete the setup, you need to specify a few options on the tablet. Access these by tapping the **dot** at the **top right corner** in the TouchOSC app.
-
-Set the following **Host**:
-
-- Host: ``192.168.4.1`` (which is the ESP32's IP Address)
-- Port (outgoing): ``8000``
-- Port (incoming): ``9000``
-
-And under **Options**:
-
-- Send Ping (``/ping``): ``On``
-- Delay: ``5s`` 
-
-Finally, make sure to connect with the systems WiFi:
-- Network name (SSID): ``koebi``
-- No password / encryption
-
-When opening TouchOSC, you should now be able to power up the motors and control them. 
+How much do you need? To get you started with the software, each of this three guides covers a different level:
+1. **[Getting started](getting_started.md)**: Setup and interact with Köbi _using a tablet_ and the default OSC API
+2. **[Hacking](hacking.md)**: Extend Köbis functionality _by modifying the Micropython_ code running the ESP32
+3. **[Developing](developing.md)**: Modify the _Micropython firmware (written in C)_ to improve on the modules [MCPWM]() or [TMC](). These are part of the modified Micropython built, ie. "frozen"
 
 
-## Developing using VS Code and Pymakr
-- Pymakr + VS Code, alternativen
-- micropy für intellisense
-- Wiki-Seiten mit API zu MCPWM, tmc-control
+Hardware
+--------
+
+This repo also supplies you with everything needed to build your own Köbi.
+
+### Bill of Ordering Materials
+
+| Thing                 | Brand    | Part      | Source          | Price |
+|-----------------------|----------|-----------|-----------------|-------|
+| Steppers (5-pack)     | Hanpose  | 17HS4401  | AliExpress      | 38.-  |
+| Voltage Supply (120W) | GYU&PW   | S-120-24  | AliExpress      | 13.-  |
+| ESP32 Thing           | SparkFun | DEV-13907 | [bastelgarage](https://www.bastelgarage.ch/sparkfun-esp32-thing) | 22.- |
+
+SN74LS138N
+
+- bom: steppers, supply, esp32, tmcs, pcb/components, wall plug
+
+### 3D Printed Parts
+![Thread Spool (40mm)](parts/Sp40A.png)
+**Thread Spool (40mm)**: [.stl](parts/Sp40A.stl)
+![Thread Spool (20mm)](parts/Sp20A.png)
+![Pulley](parts/Redli46.png)
+![Voltage Supply Cover](parts/supply_cover.png)
+![Pull Relief](parts/pull_relief.png)
+![Poor Man's Fan Holder](parts/fan_clip.png)
+
+ 
+- stl, link zu onshape
 
 
-## Recompile the Micropython build
-
-- When is this necessary?
-- Instructions about submodules and forks for micropython/esp-idf
-
-## Hardware
-
-- Bildi 3D-Druck-Teile
+### Printed Circuit Board
 - PCB-Daten als pdf, gerber und kicad.
 
-<a name="osc-api"></a>
-## Open Sound Control (OSC) API
 
-The following API is implemented in ``remote.py``. It may be used by any other client within ``koebi``'s network to control it. 
+Ideas
+-----
 
-### Globals
-
-- ``/fan`` Enable or disable the fan cooling the stepper drivers (0/1)
-- ``/power`` Enable or disable the stepper drivers output. Starts the fan upon enabling, and stops it upon disabling (0/1).  
-**Heads up**: Always disable the stepper outputs before pulling koebi's cord. Otherwise, the Trinamic stepper drivers may **be permanently damaged due to overvoltage spikes**!
-- ``/reset`` Trigger a software reset of the ESP32 board (0/1)
-
-### Motors
-- ``/all/curr`` Set the steppers' run current, specified in milliamperes (100..1200). High values (>800) may lead to thermal shutdown in a heavy-use scenario.
-
-- ``/all/acc`` Set the steppers' acceleration, in cm/s<sup>2</sup> (0..200)
- 
+- [x] Coordinated 2-axis movements
+- [ ] Load visualization
+- [ ] Presets with persistent storage
+- [ ] Self-calibration with markers
+- [x] Sequencer (Sine and jitter movements)
+- [x] Coordinated movements for more than 2 axes
+- [ ] Inverse kinematics
